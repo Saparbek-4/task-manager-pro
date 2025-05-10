@@ -1,14 +1,12 @@
-# Используем официальный базовый образ с JDK 17
-FROM eclipse-temurin:17-jdk
-
-# Устанавливаем рабочую директорию
+# Сборка приложения
+FROM maven:3.9.6-eclipse-temurin-17 AS builder
 WORKDIR /app
+COPY . .
+RUN ./mvnw clean package -DskipTests
 
-# Копируем jar-файл в контейнер
-COPY target/task-manager-pro-*.jar app.jar
-
-# Указываем порт
+# Запуск приложения
+FROM eclipse-temurin:17-jdk
+WORKDIR /app
+COPY --from=builder /app/target/task-manager-pro-*.jar app.jar
 EXPOSE 8080
-
-# Запускаем Spring Boot
 ENTRYPOINT ["java", "-jar", "app.jar"]
