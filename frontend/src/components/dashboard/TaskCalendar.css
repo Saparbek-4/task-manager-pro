@@ -1,0 +1,74 @@
+/* TaskCalendar.css */
+.custom-calendar-container abbr {
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.custom-calendar-container .react-calendar__tile--now abbr {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: rgba(25, 118, 210, 0.15);
+}
+
+.custom-calendar-container .react-calendar__tile--active abbr {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: #1976d2;
+    color: white;
+}
+
+.custom-calendar-container .react-calendar__month-view__days__day--weekend {
+    color: #f44336;
+}
+
+.custom-calendar-container .react-calendar__navigation button:disabled {
+    opacity: 0.5;
+}
+
+.custom-calendar-container .react-calendar__navigation__label {
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.custom-calendar-container .react-calendar__month-view__weekdays__weekday {
+    padding: 8px 0;
+}
+
+/* Transition effects */
+.custom-calendar-container .react-calendar__tile {
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.custom-calendar-container .react-calendar__tile:hover {
+    transform: scale(1.02);
+    z-index: 1;
+}
+
+.custom-calendar-container .react-calendar__tile:active {
+    transform: scale(0.98);
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+    .custom-calendar-container .react-calendar__tile {
+        height: 40px;
+        padding: 0;
+    }
+
+    .custom-calendar-container .react-calendar__tile abbr {
+        font-size: 0.8rem;
+    }
+
+    .custom-calendar-container .react-calendar__month-view__weekdays__weekday {
+        padding: 4px 0;
+        font-size: 0.7rem;
+    }
+}

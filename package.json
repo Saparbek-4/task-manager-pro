@@ -1,0 +1,19 @@
+{
+  "devDependencies": {
+    "@esbuild-plugins/node-globals-polyfill": "^0.2.3",
+    "@types/react-beautiful-dnd": "^13.1.8",
+    "babel-plugin-styled-components": "^2.1.4",
+    "rollup-plugin-polyfill-node": "^0.13.0"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@mui/icons-material": "^6.4.11",
+    "@mui/material": "^6.4.11",
+    "react": "^18.2.0",
+    "react-beautiful-dnd": "^13.1.1",
+    "react-calendar": "^5.1.0",
+    "react-dom": "^18.2.0",
+    "recharts": "^2.15.3"
+  }
+}

@@ -1,0 +1,16 @@
+services:
+  postgres:
+    image: postgres:15
+    container_name: task_manager_pro-db
+    restart: always
+    environment:
+      POSTGRES_DB: task_manager_pro
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: secret123
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
