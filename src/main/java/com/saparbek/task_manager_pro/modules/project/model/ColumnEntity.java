@@ -11,7 +11,7 @@ import java.util.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "columns") // 🔥 чтобы избежать конфликта с SQL
+@Table(name = "columns")
 public class ColumnEntity {
 
     @Id
