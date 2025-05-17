@@ -31,7 +31,9 @@ export const useNotifications = (userId: string | null) => {
 
         fetchInitial();
 
-        const socket = new SockJS("http://localhost:8080/ws");
+        // ✅ Use base URL from .env
+        const socketUrl = `${import.meta.env.VITE_API_URL}/ws`.replace(/^http/, "ws");
+        const socket = new SockJS(socketUrl);
         const client: Client = over(socket);
         let isConnected = false;
 
@@ -46,7 +48,6 @@ export const useNotifications = (userId: string | null) => {
                     return alreadyExists ? prev : [notif, ...prev];
                 });
             });
-
         });
 
         return () => {
@@ -70,14 +71,11 @@ export const useNotifications = (userId: string | null) => {
     const markAllAsRead = async () => {
         try {
             await axiosInstance.put(`/notifications/${userId}/mark-all-read`);
-            setNotifications((prev) =>
-                prev.map((n) => ({ ...n, read: true }))
-            );
+            setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
         } catch (err) {
             console.error("❌ Ошибка при пометке всех как прочитанных:", err);
         }
     };
-
 
     return { notifications, markAsRead, markAllAsRead };
 };
