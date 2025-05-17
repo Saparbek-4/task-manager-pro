@@ -235,7 +235,7 @@ const Header = () => {
                 <Link to="/profile">
                     {avatarUrl ? (
                         <img
-                            src={`${import.meta.env.VITE_API_URL}${avatarUrl}`}
+                            src={`${import.meta.env.VITE_WS_URL}${avatarUrl}`}
                             alt="avatar"
                             style={{
                                 width: "2.5rem",

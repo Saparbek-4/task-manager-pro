@@ -300,7 +300,7 @@ const ProfilePage = () => {
                     email: response.data.email,
                     avatarUrl: response.data.avatarUrl || ""
                 });
-                setPreviewUrl(`${import.meta.env.VITE_API_URL}${response.data.avatarUrl}`);
+                setPreviewUrl(`${import.meta.env.VITE_WS_URL}${response.data.avatarUrl}`);
             } catch (err) {
                 setError("Failed to load user data");
             }
