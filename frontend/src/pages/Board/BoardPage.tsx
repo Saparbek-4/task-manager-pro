@@ -1075,7 +1075,7 @@ const BoardPage: React.FC = () => {
                                     return (
                                         <Tooltip key={assigneeId} title={user.username || user.email}>
                                             <Avatar
-                                                src={user.avatarUrl ? `http://localhost:8080${user.avatarUrl}`: undefined}
+                                                src={user.avatarUrl ? `${import.meta.env.VITE_API_URL}${user.avatarUrl}`: undefined}
                                                 alt={user.username || user.email}
                                                 sx={{
                                                     width: 24,
@@ -1308,7 +1308,7 @@ const BoardPage: React.FC = () => {
                                                                                     return (
                                                                                         <Tooltip key={assigneeId} title={user.username || user.email}>
                                                                                             <Avatar
-                                                                                                src={user.avatarUrl ? `http://localhost:8080${user.avatarUrl}` : undefined}
+                                                                                                src={user.avatarUrl ? `${import.meta.env.VITE_API_URL}${user.avatarUrl}` : undefined}
                                                                                                 alt={user.username || user.email}
                                                                                                 sx={{
                                                                                                     width: 24,

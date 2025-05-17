@@ -830,7 +830,7 @@ const ProjectDetailsPage: React.FC = () => {
                                             <MemberInfo>
                                                 {member.avatarUrl ? (
                                                     <img
-                                                        src={`http://localhost:8080${member.avatarUrl}`}
+                                                        src={`${import.meta.env.VITE_API_URL}${member.avatarUrl}`}
                                                         alt={member.name || member.email}
                                                         style={{
                                                             width: 36,
