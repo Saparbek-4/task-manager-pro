@@ -10,7 +10,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 
 @EnableScheduling
 @SpringBootApplication
-@EnableConfigurationProperties
 public class TaskManagerProApplication {
 
 	public static void main(String[] args) {

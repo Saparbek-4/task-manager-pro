@@ -16,20 +16,12 @@ import java.util.Map;
 import java.util.function.Function;
 
 @Service
-@ConfigurationProperties(prefix = "jwt")
 public class JwtService {
 
 
-    private String secret;
-    private long expiration;
+    @Value("${jwt.secret}")
+    private String SECRET_KEY;
 
-    public void setSecret(String secret) {
-        this.secret = secret;
-    }
-
-    public void setExpiration(long expiration) {
-        this.expiration = expiration;
-    }
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -59,7 +51,7 @@ public class JwtService {
                 .setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + expiration))
+                .setExpiration(new Date(System.currentTimeMillis() + 86400000)) // 1 день
                 .signWith(getSignKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
@@ -84,7 +76,7 @@ public class JwtService {
     }
 
     private Key getSignKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(secret);
+        byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
         return Keys.hmacShaKeyFor(keyBytes); // Секрет должен быть >= 256 бит!
     }
 

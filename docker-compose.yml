@@ -4,9 +4,9 @@ services:
     container_name: task_manager_pro-db
     restart: always
     environment:
-      POSTGRES_DB: task_manager_pro
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: secret123
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/task_manager_pro
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: secret123
     ports:
       - "5433:5432"
     volumes:
@@ -18,9 +18,15 @@ services:
     ports:
       - "8080:8080"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/task_manager_pro
-      SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: secret123
+      SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL}
+      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
+      SPRING_MAIL_USERNAME: ${SPRING_MAIL_USERNAME}
+      SPRING_MAIL_PASSWORD: ${SPRING_MAIL_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
+    volumes:
+      - .env:/app/.env
+      - ~/.m2:/root/.m2
     depends_on:
       - postgres
 volumes:
