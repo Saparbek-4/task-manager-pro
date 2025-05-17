@@ -1,6 +1,6 @@
-context:
-  initializer:
-    classes: com.saparbek.task_manager_pro.auth.config.DotenvInitializer
+#context:
+#  initializer:
+#    classes: com.saparbek.task_manager_pro.auth.config.DotenvInitializer
 spring:
   datasource:
     url: ${SPRING_DATASOURCE_URL}
