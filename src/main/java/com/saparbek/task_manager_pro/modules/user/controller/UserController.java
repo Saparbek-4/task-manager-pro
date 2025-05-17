@@ -1,5 +1,7 @@
 package com.saparbek.task_manager_pro.modules.user.controller;
 
+import com.saparbek.task_manager_pro.modules.user.model.Role;
+import com.saparbek.task_manager_pro.modules.user.repository.UserRepository;
 import com.saparbek.task_manager_pro.modules.user.security.CustomUserDetails;
 import com.saparbek.task_manager_pro.modules.user.dto.UpdateUserRequest;
 import com.saparbek.task_manager_pro.modules.user.dto.UserResponse;
@@ -8,7 +10,9 @@ import com.saparbek.task_manager_pro.modules.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class UserController {
 
     private final UserService userService;
+    private final UserRepository userRepository;
 
     @PutMapping("/update")
     @PreAuthorize("isAuthenticated()")
@@ -54,6 +59,17 @@ public class UserController {
         );
 
         return ResponseEntity.ok(response);
+    }
+
+    /// Temporary Promotion via Auth Header
+    @PutMapping("/self/make-admin")
+    public ResponseEntity<?> promoteSelf(Authentication auth) {
+        User user = userRepository.findByUsername(auth.getName())
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+        user.setRole(Role.ADMIN);
+        userRepository.save(user);
+        return ResponseEntity.ok("You are now admin");
     }
 
 
