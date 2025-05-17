@@ -794,7 +794,7 @@ const DashboardPage = () => {
                                             flexDirection="column"
                                         >
                                             <Typography variant="h3" component="div" color="#fff" fontWeight={700}>
-                                                {completionPercentage ? '${completionPercentage}%' : '0%'}
+                                                {completionPercentage ? `${completionPercentage}%` : '0%'}
                                             </Typography>
                                             <Typography variant="caption" component="div" color="#fff" sx={{ opacity: 0.8 }}>
                                                 Общий прогресс
