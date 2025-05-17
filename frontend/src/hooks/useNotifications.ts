@@ -32,7 +32,7 @@ export const useNotifications = (userId: string | null) => {
         fetchInitial();
 
         // ✅ Use base URL from .env
-        const socketUrl = `${import.meta.env.VITE_API_URL}/ws`.replace(/^http/, "ws");
+        const socketUrl = `${import.meta.env.VITE_WS_URL}/ws`;
         const socket = new SockJS(socketUrl);
         const client: Client = over(socket);
         let isConnected = false;
