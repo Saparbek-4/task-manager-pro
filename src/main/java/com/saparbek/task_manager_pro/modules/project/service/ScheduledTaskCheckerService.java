@@ -23,7 +23,7 @@ public class ScheduledTaskCheckerService {
     private final MailService mailService;
     private final NotificationService notificationService;
 
-    @Scheduled(cron = "0 0 9 * * *")
+    @Scheduled(cron = "0 */2 * * * *")
     @Transactional
     public void checkOverdueTasks() {
         List<Task> overdueTasks = taskRepository.findAllByDeadlineBeforeAndStatusNot(
@@ -48,7 +48,7 @@ public class ScheduledTaskCheckerService {
         taskRepository.saveAll(overdueTasks);
     }
 
-    @Scheduled(cron = "0 0 9 * * *")
+    @Scheduled(cron = "0 */2 * * * *")
     @Transactional
     public void notifyTodayDeadlines() {
         List<Task> todayDeadlineTasks = taskRepository.findAllByDeadlineAndStatusNot(
