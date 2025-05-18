@@ -1,3 +1,4 @@
+// Responsive Header Component
 import React, {useEffect, useState} from "react";
 import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
@@ -6,6 +7,22 @@ import { NotificationBell } from "./NotificationBell";
 import axiosInstance from "../api/axiosInstance.ts";
 import { useNavigate } from "react-router-dom";
 import { LogOut } from "lucide-react";
+
+// Breakpoints for responsive design
+const breakpoints = {
+    xs: '480px',
+    sm: '768px',
+    md: '992px',
+    lg: '1200px'
+};
+
+// Media query helper
+const media = {
+    xs: `@media (max-width: ${breakpoints.xs})`,
+    sm: `@media (max-width: ${breakpoints.sm})`,
+    md: `@media (max-width: ${breakpoints.md})`,
+    lg: `@media (max-width: ${breakpoints.lg})`,
+};
 
 const HeaderWrapper = styled.header`
   display: flex;
@@ -17,6 +34,14 @@ const HeaderWrapper = styled.header`
   position: sticky;
   top: 0;
   z-index: 100;
+
+  ${media.md} {
+    padding: 0.875rem 1.5rem;
+  }
+
+  ${media.sm} {
+    padding: 0.75rem 1rem;
+  }
 `;
 
 const LogoContainer = styled.div`
@@ -28,6 +53,14 @@ const LogoContainer = styled.div`
 const LogoIcon = styled.span`
   font-size: 1.75rem;
   color: ${({ theme }) => theme.colors.primary};
+
+  ${media.sm} {
+    font-size: 1.5rem;
+  }
+
+  ${media.xs} {
+    font-size: 1.25rem;
+  }
 `;
 
 const Logo = styled(Link)`
@@ -36,9 +69,17 @@ const Logo = styled(Link)`
   color: ${({ theme }) => theme.colors.primary};
   text-decoration: none;
   transition: color 0.2s ease;
-  
+
   &:hover {
     color: ${({ theme }) => theme.colors.primaryDark};
+  }
+
+  ${media.sm} {
+    font-size: 1.25rem;
+  }
+
+  ${media.xs} {
+    font-size: 1rem;
   }
 `;
 
@@ -59,9 +100,16 @@ const MobileMenuButton = styled.button`
   font-size: 1.5rem;
   cursor: pointer;
   color: ${({ theme }) => theme.colors.textPrimary};
-  
+  padding: 0.25rem;
+
   @media (max-width: 768px) {
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  ${media.xs} {
+    font-size: 1.25rem;
   }
 `;
 
@@ -73,10 +121,18 @@ const MobileMenu = styled.div<{ isOpen: boolean }>`
   right: 0;
   background: white;
   flex-direction: column;
-  padding: 1rem;
+  padding: 0.5rem;
   box-shadow: 0 4px 6px rgba(0,0,0,0.1);
   z-index: 99;
-  
+
+  ${media.sm} {
+    top: 3.5rem;
+  }
+
+  ${media.xs} {
+    top: 3rem;
+  }
+
   @media (min-width: 769px) {
     display: none;
   }
@@ -88,13 +144,18 @@ const MobileNavLink = styled(Link)`
   font-weight: 500;
   padding: 1rem;
   border-bottom: 1px solid ${({ theme }) => theme.colors.border};
-  
+
   &:last-child {
     border-bottom: none;
   }
-  
+
   &:hover {
     background: ${({ theme }) => theme.colors.backgroundLight};
+  }
+
+  ${media.xs} {
+    padding: 0.75rem;
+    font-size: 0.9rem;
   }
 `;
 
@@ -106,10 +167,15 @@ const NavLink = styled(Link)<{ active: boolean }>`
   padding: 0.5rem 1rem;
   border-radius: 8px;
   transition: all 0.2s ease;
-  
+
   &:hover {
     background: ${({ theme }) => theme.colors.backgroundLight};
     color: ${({ theme }) => theme.colors.primary};
+  }
+
+  ${media.md} {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
   }
 `;
 
@@ -117,6 +183,14 @@ const UserSection = styled.div`
   display: flex;
   align-items: center;
   gap: 1rem;
+
+  ${media.md} {
+    gap: 0.75rem;
+  }
+
+  ${media.xs} {
+    gap: 0.5rem;
+  }
 `;
 
 const UserAvatar = styled.div`
@@ -132,9 +206,21 @@ const UserAvatar = styled.div`
   font-size: 1rem;
   cursor: pointer;
   transition: all 0.2s ease;
-  
+
   &:hover {
     box-shadow: 0 0 0 3px ${({ theme }) => theme.colors.primaryLight};
+  }
+
+  ${media.md} {
+    width: 2.25rem;
+    height: 2.25rem;
+    font-size: 0.9rem;
+  }
+
+  ${media.xs} {
+    width: 2rem;
+    height: 2rem;
+    font-size: 0.85rem;
   }
 `;
 
@@ -150,6 +236,10 @@ const NotificationIcon = styled.span`
   
   &:hover {
     color: ${({ theme }) => theme.colors.primary};
+  }
+  
+  ${media.xs} {
+    font-size: 1.1rem;
   }
 `;
 
@@ -167,6 +257,36 @@ const Badge = styled.span`
   display: flex;
   align-items: center;
   justify-content: center;
+`;
+
+const LogoutButton = styled.button`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: transparent;
+  border: none;
+  color: #ef4444;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  transition: background-color 0.2s ease;
+  
+  &:hover {
+    background-color: rgba(239, 68, 68, 0.1);
+  }
+  
+  ${media.sm} {
+    padding: 0.4rem 0.75rem;
+  }
+  
+  ${media.xs} {
+    padding: 0.3rem;
+    /* Hide text, show only icon on very small screens */
+    span {
+      display: none;
+    }
+  }
 `;
 
 const Header = () => {
@@ -225,9 +345,6 @@ const Header = () => {
                 <NavLink to="/projects" active={isActive("/projects")}>
                     Projects
                 </NavLink>
-                <NavLink to="/tasks" active={isActive("/tasks")}>
-                    Tasks
-                </NavLink>
             </NavLinks>
 
             <UserSection>
@@ -252,26 +369,10 @@ const Header = () => {
                         </UserAvatar>
                     )}
                 </Link>
-                <button
-                    onClick={handleLogout}
-                    style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "0.5rem",
-                        background: "transparent",
-                        border: "none",
-                        color: "#ef4444",
-                        fontWeight: 500,
-                        cursor: "pointer",
-                        padding: "0.5rem 1rem",
-                        borderRadius: "0.5rem"
-                    }}
-                >
+                <LogoutButton onClick={handleLogout}>
                     <LogOut size={18} />
-                    Logout
-                </button>
-
-
+                    <span>Logout</span>
+                </LogoutButton>
 
                 <MobileMenuButton onClick={toggleMobileMenu}>
                     {mobileMenuOpen ? "✕" : "☰"}
@@ -284,9 +385,6 @@ const Header = () => {
                 </MobileNavLink>
                 <MobileNavLink to="/projects" onClick={() => setMobileMenuOpen(false)}>
                     Projects
-                </MobileNavLink>
-                <MobileNavLink to="/tasks" onClick={() => setMobileMenuOpen(false)}>
-                    Tasks
                 </MobileNavLink>
                 <MobileNavLink to="/profile" onClick={() => setMobileMenuOpen(false)}>
                     Profile

@@ -17,21 +17,52 @@ type Project = {
 type FilterStatus = 'all' | 'active' | 'archived' | 'completed';
 
 // Styled Components
+// Responsive breakpoints
+const breakpoints = {
+    xs: '480px',
+    sm: '768px',
+    md: '992px',
+    lg: '1200px'
+};
+
+// Media query helper
+const media = {
+    xs: `@media (max-width: ${breakpoints.xs})`,
+    sm: `@media (max-width: ${breakpoints.sm})`,
+    md: `@media (max-width: ${breakpoints.md})`,
+    lg: `@media (max-width: ${breakpoints.lg})`,
+};
+
+// Styled Components
 const PageWrapper = styled.div`
   background-color: ${({ theme }) => theme.colors.background};
   min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
 `;
 
 const Container = styled.div`
   max-width: 1300px;
   margin: 0 auto;
   padding: 1.5rem 2rem;
+
+  ${media.md} {
+    padding: 1.25rem 1.5rem;
+  }
+
+  ${media.sm} {
+    padding: 1rem;
+  }
 `;
 
 const PageHeader = styled.div`
   display: flex;
   flex-direction: column;
   margin-bottom: 1.5rem;
+
+  ${media.sm} {
+    margin-bottom: 1rem;
+  }
 `;
 
 const TopBar = styled.div`
@@ -39,12 +70,20 @@ const TopBar = styled.div`
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+
+  ${media.sm} {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 `;
 
 const TitleArea = styled.div`
   display: flex;
   align-items: center;
   gap: 0.75rem;
+  flex-wrap: wrap;
 `;
 
 const Title = styled.h1`
@@ -52,6 +91,10 @@ const Title = styled.h1`
   color: ${({ theme }) => theme.colors.primary};
   margin: 0;
   font-weight: 700;
+
+  ${media.xs} {
+    font-size: 1.25rem;
+  }
 `;
 
 const ProjectCount = styled.span`
@@ -68,6 +111,16 @@ const ProjectCount = styled.span`
 const ActionButtons = styled.div`
   display: flex;
   gap: 1rem;
+
+  ${media.sm} {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  ${media.xs} {
+    flex-direction: column;
+    width: 100%;
+  }
 `;
 
 const SearchFilterRow = styled.div`
@@ -75,7 +128,11 @@ const SearchFilterRow = styled.div`
   gap: 1rem;
   margin-top: 0.75rem;
 
-  @media (max-width: 768px) {
+  ${media.md} {
+    flex-wrap: wrap;
+  }
+
+  ${media.sm} {
     flex-direction: column;
     gap: 0.75rem;
   }
@@ -84,6 +141,7 @@ const SearchFilterRow = styled.div`
 const SearchBar = styled.div`
   flex: 1;
   position: relative;
+  min-width: 200px;
 `;
 
 const SearchInput = styled.input`
@@ -99,6 +157,11 @@ const SearchInput = styled.input`
     outline: none;
     border-color: ${({ theme }) => theme.colors.primary};
     box-shadow: 0 0 0 3px ${({ theme }) => theme.colors.primaryLight};
+  }
+
+  ${media.xs} {
+    font-size: 0.875rem;
+    padding: 0.5rem 1rem 0.5rem 2.25rem;
   }
 `;
 
@@ -117,6 +180,12 @@ const FilterTabs = styled.div`
   border-radius: 8px;
   padding: 0.25rem;
   border: 1px solid ${({ theme }) => theme.colors.border};
+  flex-wrap: wrap;
+
+  ${media.xs} {
+    width: 100%;
+    justify-content: center;
+  }
 `;
 
 const FilterTab = styled.button<{ active: boolean }>`
@@ -129,9 +198,17 @@ const FilterTab = styled.button<{ active: boolean }>`
   transition: all 0.2s ease;
   background-color: ${({ active, theme }) => active ? theme.colors.primary : 'transparent'};
   color: ${({ active, theme }) => active ? 'white' : theme.colors.textSecondary};
+  white-space: nowrap;
 
   &:hover {
     background-color: ${({ active, theme }) => active ? theme.colors.primary : theme.colors.backgroundLight};
+  }
+
+  ${media.xs} {
+    padding: 0.4rem 0.75rem;
+    font-size: 0.8rem;
+    flex: 1;
+    text-align: center;
   }
 `;
 
@@ -149,11 +226,17 @@ const NewProjectButton = styled.button`
   gap: 0.5rem;
   transition: all 0.2s ease;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  white-space: nowrap;
 
   &:hover {
     background: ${({ theme }) => theme.colors.primaryDark};
     transform: translateY(-1px);
     box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+  }
+
+  ${media.xs} {
+    width: 100%;
+    justify-content: center;
   }
 `;
 
@@ -202,6 +285,12 @@ const ErrorText = styled.div`
   justify-content: center;
   gap: 0.75rem;
   font-size: 1rem;
+  flex-wrap: wrap;
+
+  ${media.xs} {
+    font-size: 0.875rem;
+    padding: 0.875rem;
+  }
 `;
 
 const ErrorIcon = styled.span`
@@ -224,6 +313,13 @@ const RetryButton = styled.button`
     background: rgba(255, 255, 255, 0.9);
     transform: translateY(-1px);
   }
+
+  ${media.xs} {
+    font-size: 0.8rem;
+    padding: 0.3rem 0.6rem;
+    margin-top: 0.5rem;
+    margin-left: 0;
+  }
 `;
 
 const EmptyState = styled.div`
@@ -238,6 +334,16 @@ const EmptyState = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 1rem;
+
+  ${media.sm} {
+    padding: 2rem 1rem;
+    margin: 1.5rem auto;
+  }
+
+  ${media.xs} {
+    padding: 1.5rem 1rem;
+    margin: 1rem auto;
+  }
 `;
 
 const EmptyStateIcon = styled.div`
@@ -245,12 +351,20 @@ const EmptyStateIcon = styled.div`
   color: ${({ theme }) => theme.colors.secondary};
   margin-bottom: 0.5rem;
   opacity: 0.7;
+
+  ${media.xs} {
+    font-size: 2.5rem;
+  }
 `;
 
 const EmptyStateTitle = styled.h2`
   font-size: 1.5rem;
   margin: 0;
   color: ${({ theme }) => theme.colors.textPrimary};
+
+  ${media.xs} {
+    font-size: 1.25rem;
+  }
 `;
 
 const EmptyStateText = styled.p`
@@ -259,11 +373,20 @@ const EmptyStateText = styled.p`
   max-width: 500px;
   line-height: 1.5;
   color: ${({ theme }) => theme.colors.textSecondary};
+
+  ${media.xs} {
+    font-size: 0.875rem;
+    line-height: 1.4;
+  }
 `;
 
 const EmptyStateButton = styled(NewProjectButton)`
   margin-top: 0.75rem;
   padding: 0.5rem 1.25rem;
+
+  ${media.xs} {
+    padding: 0.5rem 1rem;
+  }
 `;
 
 const ProjectList = styled.div`
@@ -271,8 +394,22 @@ const ProjectList = styled.div`
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 1.25rem;
 
-  @media (max-width: 768px) {
+  ${media.lg} {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+  
+  ${media.md} {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1rem;
+  }
+
+  ${media.sm} {
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  }
+  
+  ${media.xs} {
     grid-template-columns: 1fr;
+    gap: 0.875rem;
   }
 `;
 
@@ -281,6 +418,11 @@ const NoResultsMessage = styled.div`
   padding: 2rem;
   color: ${({ theme }) => theme.colors.textSecondary};
   font-size: 1rem;
+  
+  ${media.xs} {
+    padding: 1.5rem;
+    font-size: 0.875rem;
+  }
 `;
 
 const ProjectsPage: React.FC = () => {

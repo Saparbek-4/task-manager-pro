@@ -47,14 +47,44 @@ interface Board {
     createdAt: string;
 }
 
-// --- Styled Components ---
+// --- Responsive Styled Components ---
+// Breakpoints for responsive design
+const breakpoints = {
+    xs: '480px',
+    sm: '768px',
+    md: '992px',
+    lg: '1200px'
+};
+
+// Media query helper
+const media = {
+    xs: `@media (max-width: ${breakpoints.xs})`,
+    sm: `@media (max-width: ${breakpoints.sm})`,
+    md: `@media (max-width: ${breakpoints.md})`,
+    lg: `@media (max-width: ${breakpoints.lg})`,
+};
+
 const PageWrapper = styled.div`
   background-color: ${({ theme }) => theme.colors.background};
   min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
 `;
 
 const PageContent = styled.div`
   padding: 2rem;
+  
+  ${media.md} {
+    padding: 1.5rem;
+  }
+  
+  ${media.sm} {
+    padding: 1rem;
+  }
+  
+  ${media.xs} {
+    padding: 0.75rem;
+  }
 `;
 
 const Container = styled.div`
@@ -64,6 +94,22 @@ const Container = styled.div`
   border-radius: 12px;
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
   padding: 2.5rem;
+  
+  ${media.md} {
+    padding: 2rem;
+    border-radius: 10px;
+  }
+  
+  ${media.sm} {
+    padding: 1.5rem;
+    border-radius: 8px;
+  }
+  
+  ${media.xs} {
+    padding: 1rem;
+    border-radius: 6px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  }
 `;
 
 const BackButton = styled.button`
@@ -79,8 +125,15 @@ const BackButton = styled.button`
   gap: 0.5rem;
   margin-bottom: 1.5rem;
   transition: 0.2s;
+  
   &:hover {
     background: ${({ theme }) => theme.colors.primaryLight};
+  }
+  
+  ${media.xs} {
+    padding: 0.4rem 0.75rem;
+    font-size: 0.8rem;
+    margin-bottom: 1rem;
   }
 `;
 
@@ -88,6 +141,16 @@ const ProjectHeader = styled.div`
   margin-bottom: 2rem;
   border-bottom: 1px solid ${({ theme }) => theme.colors.borderLight};
   padding-bottom: 1.5rem;
+  
+  ${media.md} {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.25rem;
+  }
+  
+  ${media.xs} {
+    margin-bottom: 1.25rem;
+    padding-bottom: 1rem;
+  }
 `;
 
 const Title = styled.h1`
@@ -97,31 +160,57 @@ const Title = styled.h1`
   display: flex;
   align-items: center;
   gap: 1rem;
+  flex-wrap: wrap;
+  
+  ${media.md} {
+    font-size: 1.8rem;
+  }
+  
+  ${media.sm} {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    gap: 0.75rem;
+  }
+  
+  ${media.xs} {
+    font-size: 1.3rem;
+  }
 `;
 
 const StatusBadge = styled.span<{ status?: Project["status"] }>`
   background-color: ${({ theme, status }) =>
-          status === "completed"
-                  ? theme.colors.success
-                  : status === "archived"
-                          ? theme.colors.warning
-                          : status === "active"
-                                  ? theme.colors.success
-                                  : theme.colors.primaryLight};
+    status === "completed"
+        ? theme.colors.success
+        : status === "archived"
+            ? theme.colors.warning
+            : status === "active"
+                ? theme.colors.success
+                : theme.colors.primaryLight};
 
   color: ${({ theme, status }) =>
-          status === "completed"
-                  ? theme.colors.success
-                  : status === "archived"
-                          ? theme.colors.warning
-                          : status === "active"
-                                  ? theme.colors.success
-                                  : theme.colors.primary};
+    status === "completed"
+        ? theme.colors.success
+        : status === "archived"
+            ? theme.colors.warning
+            : status === "active"
+                ? theme.colors.success
+                : theme.colors.primary};
 
   padding: 0.25rem 0.75rem;
   border-radius: 6px;
   font-size: 0.875rem;
   font-weight: 500;
+  
+  ${media.sm} {
+    padding: 0.2rem 0.6rem;
+    font-size: 0.8rem;
+  }
+  
+  ${media.xs} {
+    padding: 0.15rem 0.5rem;
+    font-size: 0.75rem;
+    border-radius: 4px;
+  }
 `;
 
 
@@ -131,6 +220,11 @@ const MetaInfo = styled.div`
   gap: 1rem;
   margin-bottom: 1rem;
   flex-wrap: wrap;
+  
+  ${media.xs} {
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+  }
 `;
 
 const CreatedAt = styled.div`
@@ -139,12 +233,26 @@ const CreatedAt = styled.div`
   gap: 0.5rem;
   color: ${({ theme }) => theme.colors.textSecondary};
   font-size: 0.875rem;
+  
+  ${media.xs} {
+    font-size: 0.8rem;
+    gap: 0.3rem;
+  }
 `;
 
 const Description = styled.p`
   font-size: 1rem;
   color: ${({ theme }) => theme.colors.textPrimary};
   margin-top: 1rem;
+  
+  ${media.sm} {
+    font-size: 0.95rem;
+  }
+  
+  ${media.xs} {
+    font-size: 0.9rem;
+    margin-top: 0.75rem;
+  }
 `;
 
 const TabsNav = styled.div`
@@ -153,6 +261,28 @@ const TabsNav = styled.div`
   margin-bottom: 2rem;
   border-bottom: 1px solid ${({ theme }) => theme.colors.borderLight};
   padding-bottom: 0.5rem;
+  overflow-x: auto;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer & Edge */
+  
+  &::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, & Opera */
+  }
+  
+  ${media.md} {
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  ${media.sm} {
+    gap: 0.5rem;
+    margin-bottom: 1.25rem;
+  }
+  
+  ${media.xs} {
+    padding-bottom: 0.75rem;
+    margin-bottom: 1rem;
+  }
 `;
 
 const TabButton = styled.button<{ active: boolean }>`
@@ -161,19 +291,40 @@ const TabButton = styled.button<{ active: boolean }>`
   border-radius: 6px;
   cursor: pointer;
   background: ${({ active, theme }) =>
-          active ? theme.colors.primary : "transparent"};
+    active ? theme.colors.primary : "transparent"};
   color: ${({ active, theme }) =>
-          active ? "#fff" : theme.colors.textPrimary};
+    active ? "#fff" : theme.colors.textPrimary};
   font-weight: 500;
   transition: 0.2s;
+  white-space: nowrap;
+  
   &:hover {
     background: ${({ theme }) => theme.colors.primaryLight};
     color: ${({ active }) => (active ? "#fff" : "inherit")};
+  }
+  
+  ${media.sm} {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.9rem;
+  }
+  
+  ${media.xs} {
+    padding: 0.3rem 0.7rem;
+    font-size: 0.8rem;
+    border-radius: 4px;
   }
 `;
 
 const Section = styled.section`
   margin-bottom: 2rem;
+  
+  ${media.sm} {
+    margin-bottom: 1.5rem;
+  }
+  
+  ${media.xs} {
+    margin-bottom: 1.25rem;
+  }
 `;
 
 const SectionHeader = styled.div`
@@ -181,6 +332,12 @@ const SectionHeader = styled.div`
   align-items: center;
   justify-content: space-between;
   margin-bottom: 1rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  
+  ${media.xs} {
+    margin-bottom: 0.75rem;
+  }
 `;
 
 const SectionTitle = styled.h2`
@@ -189,6 +346,18 @@ const SectionTitle = styled.h2`
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  
+  ${media.md} {
+    font-size: 1.15rem;
+  }
+  
+  ${media.sm} {
+    font-size: 1.1rem;
+  }
+  
+  ${media.xs} {
+    font-size: 1rem;
+  }
 `;
 
 const Badge = styled.span`
@@ -198,6 +367,16 @@ const Badge = styled.span`
   border-radius: 999px;
   font-size: 0.875rem;
   font-weight: 500;
+  
+  ${media.sm} {
+    padding: 0.2rem 0.6rem;
+    font-size: 0.8rem;
+  }
+  
+  ${media.xs} {
+    padding: 0.15rem 0.5rem;
+    font-size: 0.75rem;
+  }
 `;
 
 const List = styled.ul`
@@ -207,6 +386,10 @@ const List = styled.ul`
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  
+  ${media.xs} {
+    gap: 0.4rem;
+  }
 `;
 
 const ListItem = styled.li`
@@ -218,9 +401,24 @@ const ListItem = styled.li`
   border: 1px solid ${({ theme }) => theme.colors.borderLight};
   border-radius: 8px;
   transition: transform 0.2s, box-shadow 0.2s;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  
   &:hover {
     transform: translateY(-2px);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  ${media.sm} {
+    padding: 0.6rem 0.8rem;
+    border-radius: 6px;
+  }
+  
+  ${media.xs} {
+    padding: 0.5rem 0.7rem;
+    border-radius: 5px;
+    flex-direction: column;
+    align-items: flex-start;
   }
 `;
 
@@ -234,6 +432,18 @@ const Avatar = styled.div`
   align-items: center;
   justify-content: center;
   font-weight: 600;
+  
+  ${media.sm} {
+    width: 32px;
+    height: 32px;
+    font-size: 0.9rem;
+  }
+  
+  ${media.xs} {
+    width: 28px;
+    height: 28px;
+    font-size: 0.8rem;
+  }
 `;
 
 const MemberInfo = styled.div`
@@ -241,20 +451,38 @@ const MemberInfo = styled.div`
   align-items: center;
   gap: 1rem;
   flex: 1;
+  
+  ${media.xs} {
+    gap: 0.75rem;
+    width: 100%;
+  }
 `;
 
 const MemberDetails = styled.div`
   display: flex;
   flex-direction: column;
+  flex: 1;
 `;
 
 const MemberName = styled.span`
   font-weight: 500;
+  
+  ${media.xs} {
+    font-size: 0.9rem;
+  }
 `;
 
 const MemberEmail = styled.span`
   font-size: 0.875rem;
   color: ${({ theme }) => theme.colors.textSecondary};
+  
+  ${media.sm} {
+    font-size: 0.8rem;
+  }
+  
+  ${media.xs} {
+    font-size: 0.75rem;
+  }
 `;
 
 const MemberRole = styled.span`
@@ -263,6 +491,16 @@ const MemberRole = styled.span`
   padding: 0.25rem 0.5rem;
   border-radius: 4px;
   font-size: 0.75rem;
+  
+  ${media.sm} {
+    padding: 0.2rem 0.4rem;
+    font-size: 0.7rem;
+  }
+  
+  ${media.xs} {
+    padding: 0.15rem 0.35rem;
+    font-size: 0.65rem;
+  }
 `;
 
 const EmptyState = styled.div`
@@ -271,11 +509,27 @@ const EmptyState = styled.div`
   padding: 2rem;
   border: 1px dashed ${({ theme }) => theme.colors.borderLight};
   border-radius: 8px;
+  
+  ${media.sm} {
+    padding: 1.5rem;
+    border-radius: 6px;
+    font-size: 0.9rem;
+  }
+  
+  ${media.xs} {
+    padding: 1.25rem;
+    border-radius: 5px;
+    font-size: 0.85rem;
+  }
 `;
 
 const ActivityEvent = styled.p`
   margin: 0;
   color: ${({ theme }) => theme.colors.textPrimary};
+  
+  ${media.xs} {
+    font-size: 0.9rem;
+  }
 `;
 
 const Button = styled.button`
@@ -290,12 +544,26 @@ const Button = styled.button`
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  
   &:hover {
     background: ${({ theme }) => theme.colors.primaryDark};
   }
+  
   &:disabled {
     opacity: 0.6;
     cursor: not-allowed;
+  }
+  
+  ${media.sm} {
+    padding: 0.35rem 0.7rem;
+    font-size: 0.8rem;
+    border-radius: 5px;
+  }
+  
+  ${media.xs} {
+    padding: 0.3rem 0.6rem;
+    font-size: 0.75rem;
+    border-radius: 4px;
   }
 `;
 
@@ -303,6 +571,7 @@ const DangerButton = styled(Button)`
   background: transparent;
   color: ${({ theme }) => theme.colors.error};
   border: 1px solid ${({ theme }) => theme.colors.error};
+  
   &:hover {
     background: ${({ theme }) => theme.colors.errorLight};
     color: #fff;
@@ -313,6 +582,7 @@ const SecondaryButton = styled(Button)`
   background: transparent;
   color: ${({ theme }) => theme.colors.textSecondary};
   border: 1px solid ${({ theme }) => theme.colors.border};
+  
   &:hover {
     background: ${({ theme }) => theme.colors.background};
   }
@@ -321,6 +591,13 @@ const SecondaryButton = styled(Button)`
 const ActionsContainer = styled.div`
   display: flex;
   gap: 0.5rem;
+  
+  ${media.xs} {
+    gap: 0.4rem;
+    width: 100%;
+    justify-content: flex-end;
+    margin-top: 0.5rem;
+  }
 `;
 
 const BoardDetails = styled.div`
@@ -331,11 +608,23 @@ const BoardDetails = styled.div`
 
 const BoardName = styled.span`
   font-weight: 500;
+  
+  ${media.xs} {
+    font-size: 0.9rem;
+  }
 `;
 
 const BoardDescription = styled.span`
   font-size: 0.875rem;
   color: ${({ theme }) => theme.colors.textSecondary};
+  
+  ${media.sm} {
+    font-size: 0.8rem;
+  }
+  
+  ${media.xs} {
+    font-size: 0.75rem;
+  }
 `;
 
 const StatusSelect = styled(Select)<{ status?: string }>`
@@ -351,19 +640,34 @@ const StatusSelect = styled(Select)<{ status?: string }>`
   font-weight: 600;
   border: none;
   border-radius: 6px;
+  
   .ant-select-selector {
     background-color: transparent !important;
     border: none !important;
     box-shadow: none !important;
   }
+  
   .ant-select-arrow {
     display: none; /* убрать стрелку */
   }
+  
   &:hover {
     cursor: pointer;
     opacity: 0.9;
   }
+  
+  ${media.sm} {
+    min-width: 100px;
+    font-size: 0.9rem;
+  }
+  
+  ${media.xs} {
+    min-width: 90px;
+    font-size: 0.8rem;
+    border-radius: 4px;
+  }
 `;
+
 
 const formatDate = (dateString: string) =>
     new Date(dateString).toLocaleDateString("ru-RU", {

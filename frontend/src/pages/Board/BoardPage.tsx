@@ -59,6 +59,15 @@ interface Task {
     status: 'TODO' | 'IN_PROGRESS' | 'DONE';
     assigneeIds: string[]
 }
+interface StatusButtonProps {
+    $isActive: boolean;
+    $status: 'TODO' | 'IN_PROGRESS' | 'DONE';
+}
+interface PriorityButtonProps {
+    $isActive: boolean;
+    $priority: 'LOW' | 'MEDIUM' | 'HIGH';
+}
+
 
 // ─────────────────────────────────────────────────────────────
 // STYLED COMPONENTS
@@ -82,54 +91,87 @@ const Container = styled.div`
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  padding: 1rem 2rem;
+  padding: 1rem;
+
+  @media (min-width: 768px) {
+    padding: 1rem 2rem;
+  }
 `;
 
-
-// Updated Header with softer appearance
 const BoardHeader = styled.div`
-  padding: 1rem 2rem;
+  padding: 1rem;
   top: 0;
   z-index: 100;
   background: ${({ theme }) => theme.colors.primary};
   color: ${({ theme }) => theme.colors.textOnPrimary || '#fff'};
-  padding: 1rem 1.5rem;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 1rem;
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-`;
 
+  @media (min-width: 768px) {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.5rem;
+  }
+`;
 
 const BoardTitle = styled.div`
   display: flex;
   align-items: center;
+  justify-content: space-between;
+
+  @media (min-width: 768px) {
+    justify-content: flex-start;
+  }
 `;
 
 const BoardHeading = styled.h1`
-  font-size: 1.75rem;  /* было 2rem */
+  font-size: 1.5rem;
   font-weight: 600;
   margin: 0;
   color: ${({ theme }) => theme.colors.textOnPrimary || '#fff'};
   display: flex;
   align-items: center;
-  gap: 0.75rem;        /* совпадает с LogoContainer gap */
+  gap: 0.75rem;
+
+  @media (min-width: 768px) {
+    font-size: 1.75rem;
+  }
 `;
 
 const BoardActions = styled.div`
   display: flex;
-  gap: 1rem; /* Increased spacing between action items */
+  gap: 0.5rem;
   align-items: center;
+  flex-wrap: wrap;
+
+  @media (min-width: 768px) {
+    gap: 1rem;
+    flex-wrap: nowrap;
+  }
 `;
 
-// Enhanced search with better visual cues
 const SearchBox = styled.div`
   position: relative;
-  width: 280px;
+  width: 100%;
   transition: all 0.3s;
+
+  @media (min-width: 480px) {
+    width: 200px;
+  }
+
+  @media (min-width: 768px) {
+    width: 280px;
+  }
+
   &:focus-within {
-    width: 320px;
+    @media (min-width: 768px) {
+      width: 320px;
+    }
   }
 `;
 
@@ -139,7 +181,7 @@ const SearchIcon = styled(SearchI)`
   top: 50%;
   transform: translateY(-50%);
   color: #94a3b8;
-  pointer-events: none; /* Ensure clicks pass through to input */
+  pointer-events: none;
 `;
 
 const SearchInput = styled.input`
@@ -166,7 +208,7 @@ const SearchInput = styled.input`
 const BackButton = styled(MUIButton)`
   text-transform: none;
   border-radius: 8px;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem;
   color: ${({ theme }) => theme.colors.textOnPrimary || '#fff'} !important;
   background: rgba(255, 255, 255, 0.15);
   font-weight: 500;
@@ -174,10 +216,15 @@ const BackButton = styled(MUIButton)`
   align-items: center;
   gap: 0.5rem;
   backdrop-filter: blur(4px);
+  min-width: auto;
 
   .MuiSvgIcon-root {
     font-size: 1.25rem;
     filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.2));
+  }
+
+  @media (min-width: 480px) {
+    padding: 0.5rem 1rem;
   }
 
   &:hover {
@@ -189,13 +236,19 @@ const BackButton = styled(MUIButton)`
   }
 `;
 
-
 const ToolbarWrapper = styled.div`
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
+  gap: 0.5rem;
   margin-bottom: 1rem;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem;
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem 1rem;
+  }
 `;
 
 const BoardContent = styled.div`
@@ -207,30 +260,34 @@ const BoardContent = styled.div`
 
 const ColumnsWrapper = styled.div`
   display: flex;
-  gap: 1.25rem;
+  gap: 1rem;
   overflow-x: auto;
   padding: 0.5rem;
   flex: 1;
-  
+
   &::-webkit-scrollbar {
     height: 8px;
   }
-  
+
   &::-webkit-scrollbar-track {
     background: #f1f5f9;
     border-radius: 4px;
   }
-  
+
   &::-webkit-scrollbar-thumb {
     background: #cbd5e1;
     border-radius: 4px;
+  }
+
+  @media (min-width: 768px) {
+    gap: 1.25rem;
   }
 `;
 
 const ColumnContainer = styled.div`
   background: white;
   border-radius: 12px;
-  flex: 0 0 320px;
+  flex: 0 0 280px;
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -239,6 +296,10 @@ const ColumnContainer = styled.div`
   overflow: hidden;
   transition: all 0.2s ease;
 
+  @media (min-width: 768px) {
+    flex: 0 0 320px;
+  }
+
   &:hover {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     border-color: #cbd5e1;
@@ -246,13 +307,17 @@ const ColumnContainer = styled.div`
 `;
 
 const ColumnHeader = styled.div`
-  padding: 1rem;
+  padding: 0.75rem;
   border-bottom: 1px solid #e2e8f0;
   font-weight: 600;
   display: flex;
   align-items: center;
   justify-content: space-between;
   background: #f8fafc;
+
+  @media (min-width: 768px) {
+    padding: 1rem;
+  }
 `;
 
 const ColumnTitle = styled.div`
@@ -262,17 +327,25 @@ const ColumnTitle = styled.div`
 `;
 
 const ColumnName = styled.span`
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   color: #334155;
+
+  @media (min-width: 768px) {
+    font-size: 0.95rem;
+  }
 `;
 
 const TaskCount = styled.span`
   background: #e2e8f0;
   color: #475569;
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   padding: 0.2rem 0.5rem;
   border-radius: 12px;
   font-weight: 500;
+
+  @media (min-width: 768px) {
+    font-size: 0.75rem;
+  }
 `;
 
 const ColumnActions = styled.div`
@@ -282,30 +355,34 @@ const ColumnActions = styled.div`
 
 const TaskList = styled.div<{ isDraggingOver: boolean }>`
   flex: 1;
-  padding: 0.75rem;
+  padding: 0.5rem;
   overflow-y: auto;
   background: ${({ isDraggingOver }) => (isDraggingOver ? '#f1f5f9' : 'white')};
   transition: background 0.2s;
-  
+
   &::-webkit-scrollbar {
     width: 6px;
   }
-  
+
   &::-webkit-scrollbar-track {
     background: transparent;
   }
-  
+
   &::-webkit-scrollbar-thumb {
     background: #cbd5e1;
     border-radius: 3px;
+  }
+
+  @media (min-width: 768px) {
+    padding: 0.75rem;
   }
 `;
 
 const TaskCard = styled.div<{ isDragging: boolean; priority?: string }>`
   background: white;
-  padding: 1rem;
+  padding: 0.75rem;
   border-radius: 8px;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.5rem;
   cursor: grab;
   display: flex;
   flex-direction: column;
@@ -342,8 +419,12 @@ const TaskCard = styled.div<{ isDragging: boolean; priority?: string }>`
                     priority === 'MEDIUM' ? '#f59e0b' :
                             priority === 'LOW' ? '#10b981' : 'transparent'};
   }
-`;
 
+  @media (min-width: 768px) {
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+  }
+`;
 
 const TaskHeader = styled.div`
   display: flex;
@@ -356,24 +437,37 @@ const TaskTitle = styled.h3`
   font-weight: 500;
   margin: 0;
   color: #1e293b;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   word-break: break-word;
+
+  @media (min-width: 768px) {
+    font-size: 0.95rem;
+  }
 `;
 
 const TaskDescription = styled.p`
-  font-size: 0.875rem;
+  font-size: 0.8rem;
   color: #64748b;
   margin: 0.5rem 0;
   line-height: 1.4;
+
+  @media (min-width: 768px) {
+    font-size: 0.875rem;
+  }
 `;
 
 const TaskMeta = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 0.75rem;
-  padding-top: 0.75rem;
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
   border-top: 1px solid #f1f5f9;
+
+  @media (min-width: 768px) {
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+  }
 `;
 
 const TaskDueDate = styled.div`
@@ -381,55 +475,76 @@ const TaskDueDate = styled.div`
   align-items: center;
   gap: 0.25rem;
   color: #64748b;
-  font-size: 0.75rem;
+  font-size: 0.7rem;
+
+  @media (min-width: 768px) {
+    font-size: 0.75rem;
+  }
 `;
 
 const PriorityChip = styled(Chip)<{ priority: string }>`
-  height: 24px;
-  font-size: 0.7rem;
+  height: 22px;
+  font-size: 0.65rem;
   font-weight: 500;
   background: ${({ priority }) =>
-    priority === 'HIGH' ? '#fee2e2' :
-        priority === 'MEDIUM' ? '#fef3c7' :
-            '#d1fae5'};
+          priority === 'HIGH' ? '#fee2e2' :
+                  priority === 'MEDIUM' ? '#fef3c7' :
+                          '#d1fae5'};
   color: ${({ priority }) =>
-    priority === 'HIGH' ? '#b91c1c' :
-        priority === 'MEDIUM' ? '#b45309' :
-            '#047857'};
+          priority === 'HIGH' ? '#b91c1c' :
+                  priority === 'MEDIUM' ? '#b45309' :
+                          '#047857'};
   border: none;
+
+  @media (min-width: 768px) {
+    height: 24px;
+    font-size: 0.7rem;
+  }
 `;
 
 const AddTaskBtn = styled(MUIButton)`
   text-transform: none;
   justify-content: center;
   border-radius: 8px;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem;
   color: ${({ theme }) => theme.colors.textSecondary};
   border-top: 1px solid ${({ theme }) => theme.colors.borderLight};
   transition: all 0.2s;
+  font-size: 0.8rem;
 
   &:hover {
     background: ${({ theme }) => theme.colors.backgroundLight};
     color: ${({ theme }) => theme.colors.primary};
   }
-`;
 
+  @media (min-width: 768px) {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+  }
+`;
 
 const AddColumnBtn = styled(MUIButton)`
   text-transform: none;
   border-radius: 8px;
   height: 100%;
+  min-height: 100px;
   border: 2px dashed #e2e8f0;
   color: #64748b;
-  padding: 1rem;
-  
+  padding: 0.75rem;
+  flex: 0 0 200px;
+
   &:hover {
     background: #f8fafc;
     border-color: #cbd5e1;
     color: #3b82f6;
   }
-`;
 
+  @media (min-width: 768px) {
+    flex: 0 0 280px;
+    min-height: 400px;
+    padding: 1rem;
+  }
+`;
 const ErrorState = styled.div`
   padding: 2rem;
   text-align: center;
@@ -516,11 +631,6 @@ const EmptyState = styled.div`
   }
 `;
 
-interface StatusButtonProps {
-    $isActive: boolean;
-    $status: 'TODO' | 'IN_PROGRESS' | 'DONE';
-}
-
 export const StatusButton = styled(Button).withConfig({
     shouldForwardProp: (prop) => !['$isActive', '$status'].includes(prop)
 })<StatusButtonProps>`
@@ -554,11 +664,6 @@ const PriorityButtons = styled.div`
   gap: 0.5rem;
   margin: 1rem 0;
 `;
-
-interface PriorityButtonProps {
-    $isActive: boolean;
-    $priority: 'LOW' | 'MEDIUM' | 'HIGH';
-}
 
 export const PriorityButton = styled(Button).withConfig({
     shouldForwardProp: (prop) => !['$isActive', '$priority'].includes(prop)
@@ -976,19 +1081,19 @@ const BoardPage: React.FC = () => {
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'space-between',
-                        padding: '1.25rem 1.5rem',
+                        padding: { xs: '1rem', sm: '1.25rem 1.5rem' },
                         background: '#818cf8',
                         color: 'white',
                         fontWeight: 600,
-                        fontSize: '1.25rem',
+                        fontSize: { xs: '1rem', sm: '1.25rem' },
                     }}
                 >
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
                         <AssignmentIcon fontSize="medium" />
                         Description
                     </div>
-                    <IconButton onClick={onClose} sx={{ color: '#818cf8' }}>
-                        <CloseIcon />
+                    <IconButton onClick={onClose} sx={{ color: 'white', p: { xs: '4px', sm: '8px' } }}>
+                        <CloseIcon fontSize={window.innerWidth < 600 ? "small" : "medium"} />
                     </IconButton>
                 </DialogTitle>
 
@@ -1006,7 +1111,7 @@ const BoardPage: React.FC = () => {
                     )}
 
                     {/* Task Details */}
-                    <Grid container spacing={3} sx={{ mb: 4 }}>
+                    <Grid container spacing={{ xs: 1, sm: 3 }} sx={{ mb: { xs: 2, sm: 4 } }}>
                         <Grid item xs={12} sm={4}>
                             <Typography variant="subtitle2" color="textSecondary">
                                 Status
@@ -1066,7 +1171,13 @@ const BoardPage: React.FC = () => {
                             <Typography variant="h6" gutterBottom>
                                 Assignees
                             </Typography>
-                            <div style={{ display: 'flex', gap: '0.5rem', marginTop: '1rem', flexWrap: 'wrap' }}>
+                            <div style={{
+                                display: 'flex',
+                                gap: '0.5rem',
+                                marginTop: '1rem',
+                                flexWrap: 'wrap',
+                                justifyContent: { xs: 'center', sm: 'flex-start' }
+                            }}>
 
                             {task.assigneeIds.map(assigneeId => {
                                     const user = projectMembers.find(u => u.userId === assigneeId);
@@ -1078,10 +1189,9 @@ const BoardPage: React.FC = () => {
                                                 src={user.avatarUrl ? `${import.meta.env.VITE_WS_URL}${user.avatarUrl}`: undefined}
                                                 alt={user.username || user.email}
                                                 sx={{
-                                                    width: 24,
-                                                    height: 24,
-                                                    fontSize: '0.75rem',
-                                                    marginLeft: '-8px',
+                                                    width: { xs: 28, sm: 32 },
+                                                    height: { xs: 28, sm: 32 },
+                                                    fontSize: { xs: '0.8rem', sm: '0.9rem' },
                                                     border: '2px solid white',
                                                     backgroundColor: '#cbd5e1',
                                                     color: '#334155',
@@ -1101,19 +1211,26 @@ const BoardPage: React.FC = () => {
                 </DialogContent>
 
                 {/* Actions */}
-                <DialogActions sx={{ p: 3 }}>
+                <DialogActions sx={{
+                    p: { xs: 2, sm: 3 },
+                    flexDirection: { xs: 'column-reverse', sm: 'row' },
+                    gap: { xs: 1, sm: 0 }}}>
                     <Button
                         onClick={() => {
                             onClose();
                             openEditTaskModal(task);
                         }}
                         startIcon={<EditIcon />}
+                        fullWidth={window.innerWidth < 600}
+                        size={window.innerWidth < 600 ? "small" : "medium"}
                     >
                         Edit Task
                     </Button>
                     <Button
                         variant="contained"
                         onClick={onClose}
+                        fullWidth={window.innerWidth < 600}
+                        size={window.innerWidth < 600 ? "small" : "medium"}
                         sx={{
                             backgroundColor: '#3b82f6',
                             borderRadius: '8px',
@@ -1135,10 +1252,27 @@ const BoardPage: React.FC = () => {
         return (
             <PageWrapper>
                 <Container>
-                    <Skeleton variant="rectangular" width="100%" height={80} sx={{ mb: 2, borderRadius: '12px' }} />
-                    <div style={{ display: 'flex', gap: '1.25rem', height: '70vh' }}>
+                    <Skeleton variant="rectangular" width="100%" height={80} sx={{
+                        mb: 2,
+                        borderRadius: '12px',
+                        height: { xs: 60, sm: 80 }
+                    }} />
+                    <div style={{
+                        display: 'flex',
+                        gap: '1rem',
+                        height: '70vh',
+                        flexDirection: { xs: 'column', sm: 'row' },
+                        alignItems: { xs: 'center', sm: 'stretch' }
+                    }}>
                         {[1, 2, 3].map((col) => (
-                            <ColumnSkeleton key={col} variant="rectangular" width={320}>
+                            <ColumnSkeleton
+                                key={col}
+                                variant="rectangular"
+                                width={window.innerWidth < 600 ? '90%' : 320}
+                                sx={{
+                                    height: { xs: 200, sm: '100%' }
+                                }}
+                            >
                                 <div style={{ padding: '1rem' }}>
                                     {[1, 2, 3].map((task) => (
                                         <TaskSkeleton key={task} variant="rectangular" />
@@ -1157,10 +1291,16 @@ const BoardPage: React.FC = () => {
             <PageWrapper>
                 <Container>
                     <ErrorState>
-                        <Typography variant="h6" sx={{ mb: 2 }}>
+                        <Typography variant="h6" sx={{ mb: 2, fontSize: { xs: '1rem', sm: '1.25rem' } }}>
                             {error}
                         </Typography>
-                        <MUIButton variant="contained" color="error" onClick={() => window.location.reload()} sx={{ mt: 2 }}>
+                        <MUIButton
+                            variant="contained"
+                            color="error"
+                            onClick={() => window.location.reload()}
+                            sx={{ mt: 2 }}
+                            size={window.innerWidth < 600 ? "small" : "medium"}
+                        >
                             Retry
                         </MUIButton>
                     </ErrorState>
@@ -1173,11 +1313,18 @@ const BoardPage: React.FC = () => {
         <PageWrapper>
             <Container>
                 <BoardHeader>
-                    <BackButton startIcon={<ArrowBackIcon />} onClick={() => navigate(`/projects/${projectId}`)}>
+                    <BackButton
+                        startIcon={<ArrowBackIcon />}
+                        onClick={() => navigate(`/projects/${projectId}`)}
+                        sx={{
+                            padding: { xs: '0.5rem', sm: '0.5rem 1rem' },
+                            fontSize: { xs: '0.8rem', sm: '1rem' }
+                        }}
+                    >
                         Back to Project
                     </BackButton>
                     <BoardTitle>
-                        <BoardHeading>{boardName}</BoardHeading>
+                        <BoardHeading >{boardName}</BoardHeading>
                     </BoardTitle>
                     <BoardActions>
                         <SearchBox>
@@ -1188,11 +1335,6 @@ const BoardPage: React.FC = () => {
                                 onChange={(e) => setSearchTerm(e.target.value)}
                             />
                         </SearchBox>
-                        <Tooltip title="Filter tasks">
-                            <IconButton>
-                                <FilterListIcon />
-                            </IconButton>
-                        </Tooltip>
                     </BoardActions>
                 </BoardHeader>
 
