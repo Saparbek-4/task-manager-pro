@@ -7,9 +7,12 @@ import ProjectDetailsPage from "./pages/projects/ProjectDetailsPage.tsx";
 import BoardPage from "./pages/Board/BoardPage.tsx";
 import ProfilePage from "./pages/ProfilePage.tsx";
 import DashboardPage from "./pages/dashboard/DashboardPage.tsx";
+import BackendStatus from "./components/BackendStatus";
+
 function App() {
     return (
             <BrowserRouter>
+                <BackendStatus />
                 <Routes>
                     {/* Публичные маршруты */}
                     <Route path="/" element={<LoginPage />} />
