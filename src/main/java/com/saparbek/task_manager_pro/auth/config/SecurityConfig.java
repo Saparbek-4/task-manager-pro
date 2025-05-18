@@ -41,7 +41,7 @@ public class SecurityConfig {
     public CorsFilter corsFilter() {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.addAllowedOriginPattern("*"); // Разрешает любой origin
+        config.addAllowedOriginPattern("*");
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
 
@@ -85,6 +85,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/tasks/**").hasAnyRole("USER", "ADMIN")
                         .requestMatchers("/api/notifications/**").authenticated()
                         .requestMatchers("/api/users/update", "/api/users/avatar").authenticated()
+                        .requestMatchers("/api/user/self/make-admin").authenticated()
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form

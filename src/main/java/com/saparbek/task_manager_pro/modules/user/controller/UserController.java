@@ -63,13 +63,17 @@ public class UserController {
 
     /// Temporary Promotion via Auth Header
     @PutMapping("/self/make-admin")
-    public ResponseEntity<?> promoteSelf(Authentication auth) {
-        User user = userRepository.findByUsername(auth.getName())
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<?> promoteSelf(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        User user = userDetails.getUser();
+
+        if (user.getRole() == Role.ADMIN) {
+            return ResponseEntity.ok("⚠️ You are already an admin");
+        }
 
         user.setRole(Role.ADMIN);
         userRepository.save(user);
-        return ResponseEntity.ok("You are now admin");
+        return ResponseEntity.ok("🎉 You are now an admin!");
     }
 
 

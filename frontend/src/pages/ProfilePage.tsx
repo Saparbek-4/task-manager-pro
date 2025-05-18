@@ -346,6 +346,18 @@ const ProfilePage = () => {
             fileReader.readAsDataURL(selectedFile);
         }
     };
+    const handleBecomeAdmin = async () => {
+        setMessage("");
+        setError("");
+
+        try {
+            const response = await axiosInstance.put("/user/self/make-admin");
+            setMessage(response.data || "You are now admin!");
+        } catch (err) {
+            setError(err.response?.data || "Failed to promote to admin");
+        }
+    };
+
 
     const handleFileUpload = async () => {
         if (!file) return;
@@ -454,6 +466,13 @@ const ProfilePage = () => {
                             <HelpText>
                                 To change your username or email, please contact support.
                             </HelpText>
+                            <ButtonContainer>
+                                <Button onClick={handleBecomeAdmin}>
+                                    <ButtonIcon><Check size={18} /></ButtonIcon>
+                                    Become Admin
+                                </Button>
+                            </ButtonContainer>
+
                         </div>
                     )}
 
